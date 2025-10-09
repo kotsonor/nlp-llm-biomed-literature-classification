@@ -204,3 +204,4 @@ data/
 
 # Training logs
 bert_finetuned/
+model
