@@ -38,13 +38,14 @@ class PubMedPredictorApp:
             st.header("Instructions")
             st.info(
                 """
-                1.  **Upload a CSV file** containing a column with PubMed identifiers (PMID). A preview will appear.
-                2.  **Enter keywords** in the text box, separated by commas.
-                3.  **Click 'Run Prediction'** to process the data and view the results.
+                1.  **Upload a CSV file** containing PubMed identifiers.
+                2.  **Verify the column name** containing the PMIDs.
+                3.  **Enter keywords** separated by commas.
+                4.  **Click 'Run Prediction'** to start the analysis.
                 """
             )
             st.warning(
-                "Ensure the `model` folder with your saved model is in the same directory as this `app.py` file."
+                "Ensure the `model` folder is in the same directory as this `app.py` file."
             )
 
     def _handle_file_upload(self):
@@ -54,21 +55,39 @@ class PubMedPredictorApp:
 
         if self.uploaded_file is not None:
             try:
-                # Read the uploaded file into a pandas DataFrame
                 string_data = StringIO(self.uploaded_file.getvalue().decode("utf-8"))
                 self.df = pd.read_csv(string_data)
-
-                # --- NEW: Display a preview of the uploaded data ---
                 st.subheader("Uploaded Data Preview")
                 st.dataframe(self.df.head())
-
             except Exception as e:
                 st.error(f"An error occurred while reading the file: {e}")
-                self.df = None  # Reset dataframe on error
+                self.df = None
+
+    def _get_pmid_column_name(self):
+        """
+        Gets the column name for PubMed IDs from the user and validates its existence.
+        Returns the column name or None if invalid.
+        """
+        st.header("2. Specify PMID Column")
+
+        pmid_column = st.text_input(
+            "Enter the name of the column containing PubMed IDs (PMID)",
+            value="PMID",
+        )
+
+        if self.df is not None:
+            if pmid_column not in self.df.columns:
+                st.error(
+                    f"Error: Column '{pmid_column}' not found in the uploaded file. "
+                    "Please check the column name and try again. "
+                    f"Available columns: {', '.join(self.df.columns)}"
+                )
+                return None
+        return pmid_column
 
     def _get_keywords(self):
         """Displays the text area for keyword input."""
-        st.header("2. Provide Keywords")
+        st.header("3. Provide Keywords")
         default_keywords = (
             "aggregates, amyloid, scfv, hiapp, mab, ttr, donanemab, aggregation"
         )
@@ -76,25 +95,23 @@ class PubMedPredictorApp:
             "Enter keywords separated by commas", value=default_keywords, height=100
         )
 
-    def _run_prediction(self, keywords_input):
+    def _run_prediction(self, keywords_input, pmid_column_name):
         """Handles the prediction logic when the user clicks the run button."""
-        st.header("3. Run Analysis")
+        st.header("4. Run Analysis")
         if st.button("Run Prediction"):
-            # Check if both a file has been uploaded (and successfully read) and keywords are provided.
-            if self.df is not None and keywords_input:
-                self._execute_model(keywords_input)
+            if self.df is not None and keywords_input and pmid_column_name:
+                self._execute_model(keywords_input, pmid_column_name)
             else:
-                st.warning("Please upload a CSV file and provide keywords.")
+                st.warning(
+                    "Please ensure a file is uploaded, a valid PMID column is specified, and keywords are provided."
+                )
 
-    def _execute_model(self, keywords_input):
+    def _execute_model(self, keywords_input, pmid_column_name):
         """Contains the core logic for running the model and displaying results."""
         try:
-            if "PMID" not in self.df.columns:
-                st.error("Error: The CSV file is missing a column named 'PMID'.")
-                return
-
             keywords = [keyword.strip() for keyword in keywords_input.split(",")]
             st.info(f"Using keywords: {', '.join(keywords)}")
+            st.info(f"Using column '{pmid_column_name}' for PubMed IDs.")
 
             with st.spinner(
                 "Processing... The model is analyzing the data. This may take a moment."
@@ -106,7 +123,7 @@ class PubMedPredictorApp:
                 results_df = predict_from_saved_model(
                     model_path=model_path,
                     dataset_path=temp_dataset_path,
-                    pmid_column_name="PMID",
+                    pmid_column_name=pmid_column_name,
                     keywords=keywords,
                     max_length=380,
                 )
@@ -141,13 +158,19 @@ class PubMedPredictorApp:
         """The main method to run the Streamlit application."""
         st.title("🔬 PubMed Article Analysis and Prediction")
         st.write(
-            "Upload a CSV file with a 'PMID' column and provide keywords to run the model."
+            "Upload a CSV file with a column of PubMed IDs and provide keywords to run the model."
         )
 
         self._display_sidebar()
         self._handle_file_upload()
-        keywords_input = self._get_keywords()
-        self._run_prediction(keywords_input)
+
+        pmid_column_name = None
+
+        if self.uploaded_file is not None:
+            pmid_column_name = self._get_pmid_column_name()
+            if pmid_column_name:
+                keywords_input = self._get_keywords()
+                self._run_prediction(keywords_input, pmid_column_name)
 
 
 if __name__ == "__main__":
