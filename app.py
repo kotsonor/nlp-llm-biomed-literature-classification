@@ -5,8 +5,7 @@ from io import StringIO
 import sys
 from pathlib import Path
 
-# Append the 'src' folder to the system path to find the deployment module.
-# This ensures that the script can locate and import your prediction function.
+
 # sys.path.append("src")
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
@@ -145,7 +144,7 @@ class PubMedPredictorApp:
         st.success("Prediction complete!")
         st.subheader("Results (articles marked as relevant - label: 1)")
 
-        final_results = results_df[results_df["predicted_label"] == 1]
+        final_results = results_df  # [results_df["predicted_label"] == 1]
 
         if not final_results.empty:
             st.dataframe(final_results)
