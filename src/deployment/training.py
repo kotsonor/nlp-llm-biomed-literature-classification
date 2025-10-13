@@ -3,8 +3,8 @@ from transformers import set_seed, Trainer
 from copy import deepcopy
 import wandb
 
-from .prepare_data import prepare_dataset
-from model_building import BERTClassificationStrategy
+from src.deployment.prepare_data import prepare_dataset
+from src.model_building import BERTClassificationStrategy
 
 
 model_name = "microsoft/BiomedNLP-BiomedBERT-base-uncased-abstract"

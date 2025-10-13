@@ -8,9 +8,9 @@ from transformers import (
     TrainingArguments,
 )
 
-from dataset_builder import DataFrameConverter
-from .preprocessor import Preprocessor
-from .integrator import Integrator
+from src.dataset_builder import DataFrameConverter
+from src.deployment.preprocessor import Preprocessor
+from src.deployment.integrator import Integrator
 
 
 def predict_from_saved_model(

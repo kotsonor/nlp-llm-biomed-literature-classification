@@ -11,8 +11,8 @@ from typing import Iterable, Optional
 import warnings
 import pandas as pd
 
-from fetchers import fetch_pubmed_data
-from fetch_data import load_pmid_list
+from src.fetchers import fetch_pubmed_data
+from src.fetch_data import load_pmid_list
 
 
 class Integrator:

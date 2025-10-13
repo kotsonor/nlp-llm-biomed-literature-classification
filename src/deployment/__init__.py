@@ -1,8 +1,8 @@
-from .integrator import Integrator
-from .preprocessor import Preprocessor
-from .prepare_data import prepare_dataset
-from .training import main as train_model
-from .predict import predict_from_saved_model
+from src.deployment.integrator import Integrator
+from src.deployment.preprocessor import Preprocessor
+from src.deployment.prepare_data import prepare_dataset
+from src.deployment.training import main as train_model
+from src.deployment.predict import predict_from_saved_model
 
 __all__ = [
     "Integrator",

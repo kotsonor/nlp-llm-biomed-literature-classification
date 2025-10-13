@@ -2,8 +2,8 @@ import argparse
 import warnings
 import pandas as pd
 
-from fetchers import fetch_references
-from fetchers import fetch_pubmed_data
+from src.fetchers import fetch_references
+from src.fetchers import fetch_pubmed_data
 
 
 def load_pmid_list(path: str, column: str) -> list[str]:

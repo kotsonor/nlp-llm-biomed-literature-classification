@@ -4,8 +4,8 @@ from copy import deepcopy
 import wandb
 from IPython.display import clear_output
 
-from data_prep import prepare_dataset
-from model_building import BERTClassificationStrategy
+from src.data_prep import prepare_dataset
+from src.model_building import BERTClassificationStrategy
 
 
 DEFAULT_CONFIG = {
