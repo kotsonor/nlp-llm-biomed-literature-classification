@@ -3,14 +3,18 @@ import pandas as pd
 import os
 from io import StringIO
 import sys
+from pathlib import Path
 
 # Append the 'src' folder to the system path to find the deployment module.
 # This ensures that the script can locate and import your prediction function.
 # sys.path.append("src")
+project_root = Path(__file__).parent
+sys.path.insert(0, str(project_root))
 
 try:
     from src.deployment.predict import predict_from_saved_model
-except ImportError:
+except ImportError as e:
+    st.error(f"ImportError: {e}")
     st.error(
         "Could not find the 'deployment' module. Make sure app.py is in the main project folder "
         "and your prediction module is correctly placed in the 'src' folder."
