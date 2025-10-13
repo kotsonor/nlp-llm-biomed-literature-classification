@@ -69,12 +69,17 @@ def predict_from_saved_model(
     logits = predictions_output.predictions
     predicted_labels = np.argmax(logits, axis=1)
 
+    logits_tensor = torch.from_numpy(logits)
+    probabilities = torch.nn.functional.softmax(logits_tensor, dim=1)
+    probability_of_class_1 = probabilities[:, 1].numpy()
+
     test_dataset.reset_format()
     pmids = test_dataset["test"][pmid_column_name]
     results_df = pd.DataFrame(
         {
             pmid_column_name: pmids,
             "predicted_label": predicted_labels,
+            "probability": probability_of_class_1,
         }
     )
 

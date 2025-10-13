@@ -47,9 +47,6 @@ class PubMedPredictorApp:
                 4.  **Click 'Run Prediction'** to start the analysis.
                 """
             )
-            st.warning(
-                "Ensure the `model` folder is in the same directory as this `app.py` file."
-            )
 
     def _handle_file_upload(self):
         """Handles the CSV file upload and displays a preview of the data."""
