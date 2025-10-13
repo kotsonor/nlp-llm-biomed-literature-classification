@@ -11,3 +11,4 @@ python-dotenv==1.1.1
 ipython==9.3.0
 streamlit==1.30.0
 bio==1.8.0
+accelerate==1.8.1
