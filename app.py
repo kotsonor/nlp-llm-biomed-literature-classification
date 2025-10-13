@@ -121,7 +121,8 @@ class PubMedPredictorApp:
                 self.df.to_csv(temp_dataset_path, index=False)
 
                 results_df = predict_from_saved_model(
-                    model_path=model_path,
+                    model_path="kotsonor/biomedBERT-Amyloid",
+                    # model_path=model_path,
                     dataset_path=temp_dataset_path,
                     pmid_column_name=pmid_column_name,
                     keywords=keywords,
