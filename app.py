@@ -6,10 +6,10 @@ import sys
 
 # Append the 'src' folder to the system path to find the deployment module.
 # This ensures that the script can locate and import your prediction function.
-sys.path.append("src")
+# sys.path.append("src")
 
 try:
-    from src.deployment import predict_from_saved_model
+    from src.deployment.predict import predict_from_saved_model
 except ImportError:
     st.error(
         "Could not find the 'deployment' module. Make sure app.py is in the main project folder "
