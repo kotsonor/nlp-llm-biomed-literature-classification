@@ -14,7 +14,7 @@ The project involved several key stages:
    * Tokenizer's `max_length`.
    * Learning rate (`lr`).
    * Number of frozen vs. trainable layers to balance performance and training time.
-   * Every experiment was logged on [Weights & Biases](https://wandb.ai/axzions-university-of-wroclaw/Amyloid/reports/Fine-tuning-for-amyloid-dataset--VmlldzoxNDA5NDQ4Ng).
+   * Every experiment was logged on [Weights & Biases](https://api.wandb.ai/links/axzions-university-of-wroclaw/fyqsf6bc).
 
 3. **Model Training**
    After tuning, the final model was trained on the prepared dataset.
