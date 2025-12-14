@@ -30,13 +30,13 @@ The project involved several key stages:
 
 ```
 app.py                  # Streamlit application for predictions
-
+Dockerfile              # Docker configuration for containerized deployment
+docker-compose.yml      # Docker Compose for easy setup
+pytest.ini             # Pytest configuration
+requirements.txt        # Python dependencies
 data/                   # Folder for raw and processed datasets 
-
 model/                  # Directory to store trained models
-
 notebooks/              # Jupyter notebooks for experiments and analysis
-
 src/                    # Source code for data processing and model training
   ├─ deployment/        # Scripts and utilities for deploying the model
   ├─ fetchers/          # Scripts to fetch data from PubMed or other sources
@@ -46,7 +46,55 @@ src/                    # Source code for data processing and model training
   ├─ fetch_data.py      # CLI script to fetch publication data 
   ├─ model_building.py  # Implements the model training pipeline using a Strategy pattern
   └─ run.py             # Main script to run training pipelines, hyperparameter search
+tests/                  # Unit tests for the application
 ```
+
+## Installation and Usage
+
+### Prerequisites
+- Python 3.10+
+- Docker (optional, for containerized deployment)
+
+### Local Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/kotsonor/nlp-llm-biomed-literature-classification.git
+   cd nlp-llm-biomed-literature-classification
+   ```
+
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Set up environment variables (create `.env` file):
+   ```
+   EMAIL=your_email@example.com
+   API_WANDB=your_wandb_api_key
+   ```
+
+4. Run the Streamlit app:
+   ```bash
+   streamlit run app.py
+   ```
+
+### Docker Installation
+1. Build and run with Docker Compose:
+   ```bash
+   docker-compose up --build
+   ```
+   The app will be available at `http://localhost:8501`.
+
+   **Note**: The model is downloaded automatically from Hugging Face on first run. Ensure you have a stable internet connection. For offline use, download the model locally to the `model/` directory before running.
+
+### Running Tests
+To run the test suite:
+```bash
+pytest
+```
+
+### CI/CD
+The project uses GitHub Actions for continuous integration. Tests are automatically run on every push and pull request.
 
 ## Dataset
 

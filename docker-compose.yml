@@ -1,0 +1,12 @@
+services:
+  deep-skim-app:
+    build: .
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/app
+      - /app/__pycache__
+    environment:
+      - PYTHONPATH=/app
+    stdin_open: true
+    tty: true
